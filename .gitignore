@@ -10,9 +10,18 @@
 # Python
 __pycache__/
 *.pyc
+_int_.py
+*.py
 
 # VS Code
 .vscode/
 
 # macOS
 .DS_Store
+
+.venv/
+
+# Generated AI review
+ai-review-output.md
+
+.env
