@@ -81,7 +81,12 @@ def main():
 
     if all(os.getenv(var) for var in required_vars):
         print("Using Azure OpenAI review...")
-        review = azure_openai_review(terraform_code)
+        try:
+            review = azure_openai_review(terraform_code)
+        except Exception as e:
+            print(f"Azure OpenAI failed: {e}")
+            print("Falling back to mock review...")
+            review = mock_review()
     else:
         print("Azure OpenAI configuration not found. Using mock review...")
         review = mock_review()
