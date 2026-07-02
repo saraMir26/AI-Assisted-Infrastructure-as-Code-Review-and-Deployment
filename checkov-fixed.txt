@@ -1,0 +1,200 @@
+terraform scan results:
+
+Passed checks: 20, Failed checks: 11, Skipped checks: 0
+
+Check: CKV_AZURE_33: "Ensure Storage logging is enabled for Queue service for read, write and delete requests"
+	FAILED for resource: azurerm_storage_account.storage
+	File: \main.tf:63-72
+	Guide: [1mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/azure-policies/azure-logging-policies/enable-requests-on-storage-logging-for-queue-service
+[0m
+		[37m63 | [33mresource "azurerm_storage_account" "storage" {
+		[37m64 | [33m  name                            = "stcloudnovademocc001"
+		[37m65 | [33m  resource_group_name             = azurerm_resource_group.rg.name
+		[37m66 | [33m  location                        = azurerm_resource_group.rg.location
+		[37m67 | [33m  account_tier                    = "Standard"
+		[37m68 | [33m  account_replication_type        = "LRS"
+		[37m69 | [33m  public_network_access_enabled   = false
+		[37m70 | [33m  allow_nested_items_to_be_public = false
+		[37m71 | [33m  tags                            = local.common_tags
+		[37m72 | [33m}
+
+Check: CKV_AZURE_44: "Ensure Storage Account is using the latest version of TLS encryption"
+	FAILED for resource: azurerm_storage_account.storage
+	File: \main.tf:63-72
+	Guide: [1mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/azure-policies/azure-storage-policies/bc-azr-storage-2
+[0m
+		[37m63 | [33mresource "azurerm_storage_account" "storage" {
+		[37m64 | [33m  name                            = "stcloudnovademocc001"
+		[37m65 | [33m  resource_group_name             = azurerm_resource_group.rg.name
+		[37m66 | [33m  location                        = azurerm_resource_group.rg.location
+		[37m67 | [33m  account_tier                    = "Standard"
+		[37m68 | [33m  account_replication_type        = "LRS"
+		[37m69 | [33m  public_network_access_enabled   = false
+		[37m70 | [33m  allow_nested_items_to_be_public = false
+		[37m71 | [33m  tags                            = local.common_tags
+		[37m72 | [33m}
+
+Check: CKV_AZURE_206: "Ensure that Storage Accounts use replication"
+	FAILED for resource: azurerm_storage_account.storage
+	File: \main.tf:63-72
+	Guide: [1mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/azure-policies/azure-general-policies/azr-general-206
+[0m
+		[37m63 | [33mresource "azurerm_storage_account" "storage" {
+		[37m64 | [33m  name                            = "stcloudnovademocc001"
+		[37m65 | [33m  resource_group_name             = azurerm_resource_group.rg.name
+		[37m66 | [33m  location                        = azurerm_resource_group.rg.location
+		[37m67 | [33m  account_tier                    = "Standard"
+		[37m68 | [33m  account_replication_type        = "LRS"
+		[37m69 | [33m  public_network_access_enabled   = false
+		[37m70 | [33m  allow_nested_items_to_be_public = false
+		[37m71 | [33m  tags                            = local.common_tags
+		[37m72 | [33m}
+
+Check: CKV_AZURE_50: "Ensure Virtual Machine Extensions are not Installed"
+	FAILED for resource: azurerm_linux_virtual_machine.vm
+	File: \main.tf:74-96
+	Guide: [1mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/azure-policies/azure-general-policies/bc-azr-general-14
+[0m
+		[37m74 | [33mresource "azurerm_linux_virtual_machine" "vm" {
+		[37m75 | [33m  name                = "vm-app-demo-cc-001"
+		[37m76 | [33m  resource_group_name = azurerm_resource_group.rg.name
+		[37m77 | [33m  location            = azurerm_resource_group.rg.location
+		[37m78 | [33m  size                = var.vm_size
+		[37m79 | [33m  admin_username      = "adminuser"
+		[37m80 | [33m
+		[37m81 | [33m  network_interface_ids = [azurerm_network_interface.nic.id]
+		[37m82 | [33m
+		[37m83 | [33m  os_disk {
+		[37m84 | [33m    caching              = "ReadWrite"
+		[37m85 | [33m    storage_account_type = "Standard_LRS"
+		[37m86 | [33m  }
+		[37m87 | [33m
+		[37m88 | [33m  source_image_reference {
+		[37m89 | [33m    publisher = "Canonical"
+		[37m90 | [33m    offer     = "0001-com-ubuntu-server-jammy"
+		[37m91 | [33m    sku       = "22_04-lts"
+		[37m92 | [33m    version   = "latest"
+		[37m93 | [33m  }
+		[37m94 | [33m
+		[37m95 | [33m  tags = local.common_tags
+		[37m96 | [33m}
+Check: CKV_AZURE_178: "Ensure linux VM enables SSH with keys for secure communication"
+	FAILED for resource: azurerm_linux_virtual_machine.vm
+	File: \main.tf:74-96
+	Guide: [1mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/azure-policies/azure-general-policies/azr-general-178
+[0m
+		[37m74 | [33mresource "azurerm_linux_virtual_machine" "vm" {
+		[37m75 | [33m  name                = "vm-app-demo-cc-001"
+		[37m76 | [33m  resource_group_name = azurerm_resource_group.rg.name
+		[37m77 | [33m  location            = azurerm_resource_group.rg.location
+		[37m78 | [33m  size                = var.vm_size
+		[37m79 | [33m  admin_username      = "adminuser"
+		[37m80 | [33m
+		[37m81 | [33m  network_interface_ids = [azurerm_network_interface.nic.id]
+		[37m82 | [33m
+		[37m83 | [33m  os_disk {
+		[37m84 | [33m    caching              = "ReadWrite"
+		[37m85 | [33m    storage_account_type = "Standard_LRS"
+		[37m86 | [33m  }
+		[37m87 | [33m
+		[37m88 | [33m  source_image_reference {
+		[37m89 | [33m    publisher = "Canonical"
+		[37m90 | [33m    offer     = "0001-com-ubuntu-server-jammy"
+		[37m91 | [33m    sku       = "22_04-lts"
+		[37m92 | [33m    version   = "latest"
+		[37m93 | [33m  }
+		[37m94 | [33m
+		[37m95 | [33m  tags = local.common_tags
+		[37m96 | [33m}
+Check: CKV2_AZURE_40: "Ensure storage account is not configured with Shared Key authorization"
+	FAILED for resource: azurerm_storage_account.storage
+	File: \main.tf:63-72
+	Guide: [1mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/azure-policies/azure-iam-policies/bc-azure-2-40
+[0m
+		[37m63 | [33mresource "azurerm_storage_account" "storage" {
+		[37m64 | [33m  name                            = "stcloudnovademocc001"
+		[37m65 | [33m  resource_group_name             = azurerm_resource_group.rg.name
+		[37m66 | [33m  location                        = azurerm_resource_group.rg.location
+		[37m67 | [33m  account_tier                    = "Standard"
+		[37m68 | [33m  account_replication_type        = "LRS"
+		[37m69 | [33m  public_network_access_enabled   = false
+		[37m70 | [33m  allow_nested_items_to_be_public = false
+		[37m71 | [33m  tags                            = local.common_tags
+		[37m72 | [33m}
+
+Check: CKV2_AZURE_33: "Ensure storage account is configured with private endpoint"
+	FAILED for resource: azurerm_storage_account.storage
+	File: \main.tf:63-72
+	Guide: [1mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/azure-policies/azure-general-policies/bc-azure-2-33
+[0m
+		[37m63 | [33mresource "azurerm_storage_account" "storage" {
+		[37m64 | [33m  name                            = "stcloudnovademocc001"
+		[37m65 | [33m  resource_group_name             = azurerm_resource_group.rg.name
+		[37m66 | [33m  location                        = azurerm_resource_group.rg.location
+		[37m67 | [33m  account_tier                    = "Standard"
+		[37m68 | [33m  account_replication_type        = "LRS"
+		[37m69 | [33m  public_network_access_enabled   = false
+		[37m70 | [33m  allow_nested_items_to_be_public = false
+		[37m71 | [33m  tags                            = local.common_tags
+		[37m72 | [33m}
+
+Check: CKV2_AZURE_41: "Ensure storage account is configured with SAS expiration policy"
+	FAILED for resource: azurerm_storage_account.storage
+	File: \main.tf:63-72
+	Guide: [1mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/azure-policies/azure-iam-policies/bc-azure-2-41
+[0m
+		[37m63 | [33mresource "azurerm_storage_account" "storage" {
+		[37m64 | [33m  name                            = "stcloudnovademocc001"
+		[37m65 | [33m  resource_group_name             = azurerm_resource_group.rg.name
+		[37m66 | [33m  location                        = azurerm_resource_group.rg.location
+		[37m67 | [33m  account_tier                    = "Standard"
+		[37m68 | [33m  account_replication_type        = "LRS"
+		[37m69 | [33m  public_network_access_enabled   = false
+		[37m70 | [33m  allow_nested_items_to_be_public = false
+		[37m71 | [33m  tags                            = local.common_tags
+		[37m72 | [33m}
+
+Check: CKV2_AZURE_38: "Ensure soft-delete is enabled on Azure storage account"
+	FAILED for resource: azurerm_storage_account.storage
+	File: \main.tf:63-72
+	Guide: [1mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/azure-policies/azure-general-policies/bc-azure-2-38
+[0m
+		[37m63 | [33mresource "azurerm_storage_account" "storage" {
+		[37m64 | [33m  name                            = "stcloudnovademocc001"
+		[37m65 | [33m  resource_group_name             = azurerm_resource_group.rg.name
+		[37m66 | [33m  location                        = azurerm_resource_group.rg.location
+		[37m67 | [33m  account_tier                    = "Standard"
+		[37m68 | [33m  account_replication_type        = "LRS"
+		[37m69 | [33m  public_network_access_enabled   = false
+		[37m70 | [33m  allow_nested_items_to_be_public = false
+		[37m71 | [33m  tags                            = local.common_tags
+		[37m72 | [33m}
+
+Check: CKV2_AZURE_1: "Ensure storage for critical data are encrypted with Customer Managed Key"
+	FAILED for resource: azurerm_storage_account.storage
+	File: \main.tf:63-72
+	Guide: [1mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/azure-policies/azure-general-policies/ensure-storage-for-critical-data-are-encrypted-with-customer-managed-key
+[0m
+		[37m63 | [33mresource "azurerm_storage_account" "storage" {
+		[37m64 | [33m  name                            = "stcloudnovademocc001"
+		[37m65 | [33m  resource_group_name             = azurerm_resource_group.rg.name
+		[37m66 | [33m  location                        = azurerm_resource_group.rg.location
+		[37m67 | [33m  account_tier                    = "Standard"
+		[37m68 | [33m  account_replication_type        = "LRS"
+		[37m69 | [33m  public_network_access_enabled   = false
+		[37m70 | [33m  allow_nested_items_to_be_public = false
+		[37m71 | [33m  tags                            = local.common_tags
+		[37m72 | [33m}
+
+Check: CKV2_AZURE_31: "Ensure VNET subnet is configured with a Network Security Group (NSG)"
+	FAILED for resource: azurerm_subnet.subnet
+	File: \main.tf:24-29
+	Guide: [1mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/azure-policies/azure-general-policies/bc-azure-2-31
+[0m
+		[37m24 | [33mresource "azurerm_subnet" "subnet" {
+		[37m25 | [33m  name                 = "snet-app-demo-cc-001"
+		[37m26 | [33m  resource_group_name  = azurerm_resource_group.rg.name
+		[37m27 | [33m  virtual_network_name = azurerm_virtual_network.vnet.name
+		[37m28 | [33m  address_prefixes     = ["10.0.1.0/24"]
+		[37m29 | [33m}
+
