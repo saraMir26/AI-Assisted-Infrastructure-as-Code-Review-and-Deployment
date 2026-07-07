@@ -12,7 +12,7 @@ load_dotenv()
 # This script is intentionally simple for a student demo.
 # It can print a mock AI review if no API key is available.
 
-TERRAFORM_PATH = Path("terraform/flawed/main.tf")
+TERRAFORM_PATH = Path("terraform/fixed/main.tf")
 OUTPUT_PATH = Path("ai-review-output.md")
 
 def mock_review() -> str:
