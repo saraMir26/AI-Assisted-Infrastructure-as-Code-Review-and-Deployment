@@ -1,54 +1,60 @@
-name: AI-Assisted IaC Review
+name: AI IaC Review
 
 on:
   pull_request:
     paths:
-      - "**/*.tf"
+      - "terraform/**"
+      - "scripts/**"
+      - ".github/workflows/**"
+  workflow_dispatch:
 
 permissions:
   contents: read
-  pull-requests: write   # needed to post the PR comment
-  models: read            # needed to call GitHub Models
+  pull-requests: write
 
 jobs:
-  review:
+  iac-review:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v3
 
+      - name: Terraform Format Check
+        working-directory: terraform/fixed
+        run: terraform fmt -check
+        continue-on-error: true
+
       - name: Terraform Init
+        working-directory: terraform/fixed
         run: terraform init -backend=false
 
       - name: Terraform Validate
+        working-directory: terraform/fixed
         run: terraform validate
 
-      - name: Run Checkov (baseline security scan)
-        id: checkov
-        uses: bridgecrewio/checkov-action@master
-        with:
-          directory: .
-          framework: terraform
-          soft_fail: true          # don't block the pipeline — findings feed the PR comment instead
-          output_format: cli
-          output_file_path: checkov_output.txt
+      - name: Install Checkov
+        run: pip install checkov
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.11"
+      - name: Run Checkov Scan
+        run: checkov -d terraform/fixed --quiet
+        continue-on-error: true
 
-      - name: Run AI reviewer (GitHub Models)
+      - name: Install Python Dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run AI Review
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: python scripts/ai_review.py main.tf
+          AZURE_OPENAI_ENDPOINT: ${{ secrets.AZURE_OPENAI_ENDPOINT }}
+          AZURE_OPENAI_API_KEY: ${{ secrets.AZURE_OPENAI_API_KEY }}
+          AZURE_OPENAI_DEPLOYMENT: ${{ secrets.AZURE_OPENAI_DEPLOYMENT }}
+        run: python scripts/ai_review.py
 
-      - name: Post findings as PR comment
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          gh pr comment "${{ github.event.pull_request.number }}" \
-            --body-file ai_review_output.md
+      - name: Upload AI Review Output
+        uses: actions/upload-artifact@v4
+        with:
+          name: ai-review-output
+          path: ai-review-output.md
