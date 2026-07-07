@@ -1,3 +1,4 @@
+
 resource "azurerm_resource_group" "rg" {
   name     = "myrg123"
   location = var.location
@@ -18,6 +19,13 @@ resource "azurerm_subnet" "subnet" {
 }
 
 resource "azurerm_public_ip" "pip" {
+
+  // DEMO NOTE:
+  // These settings are intentionally insecure for the presentation.
+  // They simulate a common IaC mistake where a developer accidentally exposes
+  // cloud resources to the public internet. Our pipeline should detect these
+  // risks using Checkov and the AI review step before deployment.
+
   name                = "my-public-ip"
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
@@ -25,6 +33,10 @@ resource "azurerm_public_ip" "pip" {
   sku                 = "Standard"
 }
 
+// DEMO SECURITY RISK:
+// This NSG rule allows SSH traffic on port 22 from 0.0.0.0/0,
+// which means any IP address on the internet can attempt to reach the VM.
+// This is the main reason the VM is considered publicly exposed.
 resource "azurerm_network_security_group" "nsg" {
   name                = "my-nsg"
   location            = azurerm_resource_group.rg.location
@@ -56,6 +68,9 @@ resource "azurerm_network_interface" "nic" {
   }
 }
 
+// DEMO SECURITY RISK:
+// Public network access is enabled for this storage account.
+// This simulates the CloudNova incident where a storage account was accidentally left public.
 resource "azurerm_storage_account" "storage" {
   name                            = "cloudnovapublicstore"
   resource_group_name             = azurerm_resource_group.rg.name
