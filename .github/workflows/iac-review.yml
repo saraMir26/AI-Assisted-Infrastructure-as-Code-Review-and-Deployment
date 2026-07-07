@@ -24,23 +24,23 @@ jobs:
         uses: hashicorp/setup-terraform@v3
 
       - name: Terraform Format Check
-        working-directory: terraform/flawed
+        working-directory: terraform/fixed
         run: terraform fmt -check
         continue-on-error: true
 
       - name: Terraform Init
-        working-directory: terraform/flawed
+        working-directory: terraform/fixed
         run: terraform init -backend=false
 
       - name: Terraform Validate
-        working-directory: terraform/flawed
+        working-directory: terraform/fixed
         run: terraform validate
 
       - name: Install Checkov
         run: pip install checkov
 
       - name: Run Checkov Scan
-        run: checkov -d terraform/flawed --quiet
+        run: checkov -d terraform/fixed --quiet
         continue-on-error: true
 
       - name: Install Python Dependencies
